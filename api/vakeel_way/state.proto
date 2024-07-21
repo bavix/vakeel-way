@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package vakeel_way;
+
+option go_package = "github.com/bavix/vakeel-way/pkg/api/vakeel_way";
+
+import "bavix/api/v1/uuid.proto";
+
+// StateService is a gRPC service that allows clients to update a list of UUIDs.
+//
+// The service provides the ability to update a list of UUIDs. The list of UUIDs
+// is sent as a stream of UpdateRequest messages. Each UpdateRequest message
+// contains a list of UUIDs that need to be updated. These UUIDs are used to
+// uniquely identify the request and can be used to track the request throughout
+// the system.
+//
+// The service is used to test that the gRPC service is working correctly. This
+// is done by sending a stream of UpdateRequest messages and receiving a single
+// UpdateResponse message in return. The UpdateResponse message is an empty
+// message that indicates that the update operation was successful.
+//
+// It is also used to mark services as working for some time. If services stop
+// sending information about themselves, then they do not work and it is
+// necessary to notify monitoring and create an incident.
+service StateService {
+    // Updates the list of UUIDs.
+    //
+    // Takes an array of IDs as input and marks these services as working for
+    // some time. If services stop sending information about themselves, then they
+    // do not work and it is necessary to notify monitoring and create an
+    // incident.
+    //
+    // The input is a stream of UpdateRequest messages. Each UpdateRequest
+    // message contains a list of UUIDs that need to be updated.
+    //
+    // The output is a single UpdateResponse message. The UpdateResponse message
+    // is an empty message that indicates that the update operation was
+    // successful.
+    rpc Update(stream UpdateRequest) returns (UpdateResponse);
+}
+
+// UpdateRequest is a message that represents a request to update a list of UUIDs.
+//
+// This message contains a list of UUIDs that need to be updated. These UUIDs are
+// used to uniquely identify the request and can be used to track the request
+// throughout the system.
+message UpdateRequest {
+    // The list of UUIDs that need to be updated.
+    //
+    // This field contains the list of UUIDs that need to be updated. Each UUID is
+    // stored in an UUID message.
+    repeated bavix.api.v1.UUID ids = 1;
+}
+
+// UpdateResponse is a message that represents a response to an update request.
+//
+// This message is an empty message that indicates that the update operation was
+// successful.
+message UpdateResponse {}
