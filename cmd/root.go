@@ -14,6 +14,8 @@ import (
 var version = "dev"
 
 // rootCmd represents the base command when called without any subcommands
+//
+//nolint:exhaustruct
 var rootCmd = &cobra.Command{
 	Use:     "vakeel-way",               // The name of the command
 	Version: version,                    // The version of the command

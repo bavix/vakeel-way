@@ -18,6 +18,8 @@ var cfgFile string
 //
 // The serve command starts the server. The server is a gRPC service that
 // provides the StateService RPC service.
+//
+//nolint:exhaustruct
 func serveCmd() *cobra.Command {
 	// Create a new serve command.
 	return &cobra.Command{
@@ -25,7 +27,7 @@ func serveCmd() *cobra.Command {
 		Short: "Starts the server",
 		// RunE is the function that is called when the command is executed.
 		// It returns an error if there is a problem starting the server.
-		RunE: func(cmd *cobra.Command, args []string) error {
+		RunE: func(cmd *cobra.Command, _ []string) error {
 			// Create a new context that listens for the interrupt signal.
 			ctx, cancel := signal.NotifyContext(cmd.Context(), os.Interrupt)
 			defer cancel()

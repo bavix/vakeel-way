@@ -9,7 +9,7 @@ import (
 	"github.com/bavix/vakeel-way/internal/domain/entities"
 )
 
-// Api is a client for the Instatus API.
+// API is a client for the Instatus API.
 //
 // The Instatus API is used to send status updates to the Instatus service.
 // The service provides a simple REST API that accepts a POST request with a
@@ -18,12 +18,12 @@ import (
 // Fields:
 //
 //	client: The HTTP client used to make requests to the Instatus API.
-type Api struct {
+type API struct {
 	// client: The HTTP client used to make requests to the Instatus API.
 	client *http.Client
 }
 
-// NewApi creates a new Instatus API client.
+// NewAPI creates a new Instatus API client.
 //
 // It takes a variable number of Option functions as parameters and returns a
 // pointer to an Api struct. The Option functions are used to customize the
@@ -32,11 +32,11 @@ type Api struct {
 //
 // Option: An option function that takes a pointer to an Api struct and modifies
 // it. This allows for customization of the Api struct before it is returned.
-// Multiple options can be passed to NewApi to configure the Api struct.
+// Multiple options can be passed to NewAPI to configure the Api struct.
 //
 // Example:
 //
-//	api := instatus.NewApi(
+//	api := instatus.NewAPI(
 //		instatus.WithClient(&http.Client{Timeout: 5 * time.Second}),
 //	)
 //
@@ -59,9 +59,11 @@ type Api struct {
 // Returns:
 //
 //	A pointer to an Api struct.
-func NewApi(ops ...Option) *Api {
+//
+//nolint:exhaustruct
+func NewAPI(ops ...Option) *API {
 	// Create a new Api struct with default settings for the http.Client.
-	api := &Api{
+	api := &API{
 		client: &http.Client{},
 	}
 
@@ -76,7 +78,7 @@ func NewApi(ops ...Option) *Api {
 // Option is a function that can be used to configure an Api instance.
 //
 // It takes a pointer to an Api instance and returns nothing.
-type Option func(*Api)
+type Option func(*API)
 
 // WithClient returns an Option function that sets the http.Client used to send HTTP requests
 // to the Instatus API.
@@ -102,7 +104,7 @@ func WithClient(c http.Client) Option {
 	//
 	// Returns:
 	// None.
-	return func(api *Api) {
+	return func(api *API) {
 		// Set the http.Client in the Api struct to the provided *http.Client,
 		// or create a new http.Client with default settings if the *http.Client
 		// is nil.
@@ -125,7 +127,7 @@ func WithClient(c http.Client) Option {
 // - ctx: The context.Context to use for the request.
 // - url: The URL to send the request to.
 // - status: The entities.Status to use in the request payload.
-func (s *Api) Send(ctx context.Context, url string, status entities.Status) error {
+func (s *API) Send(ctx context.Context, url string, status entities.Status) error {
 	// Create the request payload as a JSON object with a single key "trigger"
 	// and a value that corresponds to the status.
 	// The payload is created as a string with the JSON object in it.
@@ -136,8 +138,8 @@ func (s *Api) Send(ctx context.Context, url string, status entities.Status) erro
 	// Create a new HTTP request with the provided context and the specified URL.
 	// The request is a POST request with the payload as the request body.
 	// The request is created using http.NewRequestWithContext().
-	req, err := http.NewRequestWithContext(ctx, "POST", url,
-		bytes.NewBuffer([]byte(payload)))
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, url,
+		bytes.NewBufferString(payload))
 	if err != nil {
 		return err
 	}

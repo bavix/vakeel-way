@@ -8,8 +8,8 @@ import "github.com/bavix/vakeel-way/internal/infra/instatus"
 // It provides methods for sending status updates to the Instatus service.
 //
 // The function returns a pointer to an instatus.Api struct.
-func (b *Builder) inStatusClient() *instatus.Api {
+func (b *Builder) inStatusClient() *instatus.API {
 	// Create a new instance of the instatus.Api struct.
 	// The struct is created with default settings.
-	return instatus.NewApi()
+	return instatus.NewAPI()
 }

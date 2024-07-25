@@ -98,7 +98,7 @@ func (c *Checker) Send(id uuid.UUID) {
 	// The Events channel is a channel of type uuid.UUID that is used to send events to the goroutine that processes the events.
 	//
 	// This function does not return anything.
-
+	//
 	// Send the event to the events channel.
 	c.Events <- id
 }

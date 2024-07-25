@@ -7,8 +7,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/bavix/vakeel-way/internal/infra/cache"
 	"github.com/stretchr/testify/suite"
+
+	"github.com/bavix/vakeel-way/internal/infra/cache"
 )
 
 // CacheTestSuite represents the test suite for the cache functionality.
@@ -151,6 +152,8 @@ func (suite *CacheTestSuite) TestCache_Expire() {
 // Returns:
 //
 //	None.
+//
+//nolint:funlen
 func (suite *CacheTestSuite) TestCache_WithOnEvict() {
 	// Create a mutex to synchronize access to the onEvictCount and keys variables.
 	var mu sync.Mutex

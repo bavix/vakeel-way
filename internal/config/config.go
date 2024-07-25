@@ -150,6 +150,7 @@ func New(path string) (Config, error) {
 			Host:    "0.0.0.0",
 			Port:    "4643",
 		},
+		Webhooks: Webhooks{},
 	}
 
 	// Check if the YAML file exists

@@ -96,6 +96,8 @@ type item[V any] struct {
 //
 // Returns:
 //   - A pointer to the initialized Cache instance.
+//
+//nolint:exhaustruct
 func NewCache[K comparable, V any](minimumCapacity int, options ...Option[K, V]) *Cache[K, V] {
 	// Initialize a new Cache instance with the specified minimum capacity and default values.
 	cache := &Cache[K, V]{

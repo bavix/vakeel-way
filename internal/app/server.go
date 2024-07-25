@@ -6,7 +6,7 @@ import (
 	way "github.com/bavix/vakeel-way/pkg/api/vakeel_way"
 )
 
-var _ = way.StateServiceServer(&GRPCServer{})
+var _ = way.StateServiceServer(&GRPCServer{}) //nolint:exhaustruct
 
 // NewGRPCServer creates a new instance of the GRPCServer struct.
 //
@@ -19,6 +19,8 @@ var _ = way.StateServiceServer(&GRPCServer{})
 //
 // Returns:
 //   - A pointer to a GRPCServer struct.
+//
+//nolint:exhaustruct
 func NewGRPCServer(
 	checker *usecases.Checker,
 ) *GRPCServer {

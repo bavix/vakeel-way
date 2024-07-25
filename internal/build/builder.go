@@ -21,6 +21,8 @@ type Builder struct {
 //
 // Returns a pointer to the newly created Builder instance and an error if there
 // was an error reading the configuration.
+//
+//nolint:exhaustruct
 func NewBuilder(config config.Config) (*Builder, error) {
 	// Create a new instance of the Builder struct with the configuration.
 	return &Builder{config: config}, nil

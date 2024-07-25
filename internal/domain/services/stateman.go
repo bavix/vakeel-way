@@ -40,8 +40,8 @@ type WebhookRegistry interface {
 
 // Api represents an interface for sending status updates.
 
-// Api represents an interface for sending status updates.
-type Api interface {
+// API represents an interface for sending status updates.
+type API interface {
 	// Send sends a status update to the specified URL.
 	//
 	// Parameters:
@@ -87,7 +87,7 @@ type StateManager struct {
 	// api is the API used to send status updates.
 	//
 	// This field holds the API used to send status updates. It is of type Api.
-	api Api
+	api API
 
 	// repo is the repository used to get webhook URLs.
 	//
@@ -118,7 +118,9 @@ type StateManager struct {
 //
 // Returns:
 //   - A pointer to the initialized StateManager.
-func NewStateManager(api Api, repo WebhookRegistry) *StateManager {
+//
+//nolint:exhaustruct
+func NewStateManager(api API, repo WebhookRegistry) *StateManager {
 	// Create a new StateManager instance.
 	stateManager := &StateManager{
 		api:  api,  // Set the API used to send status updates.
@@ -175,6 +177,7 @@ func (s *StateManager) garbageCollector(id uuid.UUID, current state) {
 
 		// If an error occurs, add the status 'Down' to the cache.
 		s.cache.Add(id, current, timeout)
+
 		return
 	}
 
@@ -186,6 +189,7 @@ func (s *StateManager) garbageCollector(id uuid.UUID, current state) {
 
 		// If an error occurs, add the status 'Down' to the cache.
 		s.cache.Add(id, current, timeout)
+
 		return
 	}
 }
@@ -216,7 +220,7 @@ func (s *StateManager) Send(ctx context.Context, id uuid.UUID, status entities.S
 	// add it to the cache and return nil.
 	if currentStatus != nil && currentStatus.status == status {
 		// Prolong the life of the status in the cache.
-		s.cache.Add(id, state{status: status}, ttl)
+		s.cache.Add(id, state{status: status, attempt: 0}, ttl)
 
 		return nil
 	}
@@ -233,7 +237,7 @@ func (s *StateManager) Send(ctx context.Context, id uuid.UUID, status entities.S
 	}
 
 	// Add the status to the cache.
-	s.cache.Add(id, state{status: status}, ttl)
+	s.cache.Add(id, state{status: status, attempt: 0}, ttl)
 
 	return nil
 }

@@ -42,6 +42,8 @@ type WebhookStubRepository struct {
 //
 // Returns:
 // - A pointer to the newly created WebhookStubRepository.
+//
+//nolint:exhaustruct
 func NewWebhookRepository(storage map[uuid.UUID]string) *WebhookStubRepository {
 	// Create a new instance of the WebhookStubRepository.
 	// The WebhookStubRepository stores the UUIDs and their associated values in the provided map.
@@ -64,7 +66,7 @@ func NewWebhookRepository(storage map[uuid.UUID]string) *WebhookStubRepository {
 // It retrieves the value associated with the given UUID from the storage.
 // If the UUID is not found, it returns an error.
 // Otherwise, it returns the value associated with the given UUID.
-func (w *WebhookStubRepository) Get(ctx context.Context, id uuid.UUID) (string, error) {
+func (w *WebhookStubRepository) Get(_ context.Context, id uuid.UUID) (string, error) {
 	// Lock the mutex to prevent concurrent access to the storage.
 	w.mu.Lock()
 	defer w.mu.Unlock()
