@@ -23,19 +23,23 @@ import "bavix/api/v1/uuid.proto";
 // sending information about themselves, then they do not work and it is
 // necessary to notify monitoring and create an incident.
 service StateService {
-    // Updates the list of UUIDs.
+    // Update is a RPC method that allows clients to update a list of UUIDs.
     //
-    // Takes an array of IDs as input and marks these services as working for
-    // some time. If services stop sending information about themselves, then they
-    // do not work and it is necessary to notify monitoring and create an
-    // incident.
+    // The method takes a stream of UpdateRequest messages as input. Each
+    // UpdateRequest message contains a list of UUIDs that need to be updated.
     //
-    // The input is a stream of UpdateRequest messages. Each UpdateRequest
-    // message contains a list of UUIDs that need to be updated.
-    //
-    // The output is a single UpdateResponse message. The UpdateResponse message
-    // is an empty message that indicates that the update operation was
+    // The method returns a single UpdateResponse message. The UpdateResponse
+    // message is an empty message that indicates that the update operation was
     // successful.
+    //
+    // Parameters:
+    // - The input is a stream of UpdateRequest messages. Each UpdateRequest
+    //   message contains a list of UUIDs that need to be updated.
+    //
+    // Returns:
+    // - The output is a single UpdateResponse message. The UpdateResponse
+    //   message is an empty message that indicates that the update operation
+    //   was successful.
     rpc Update(stream UpdateRequest) returns (UpdateResponse);
 }
 
