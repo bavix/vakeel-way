@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/rs/zerolog"
 
 	"github.com/bavix/vakeel-way/internal/domain/entities"
 	"github.com/bavix/vakeel-way/internal/infra/cache"
@@ -105,26 +106,34 @@ type StateManager struct {
 	// This field holds the mutex used to synchronize access to the cache.
 	// It is of type sync.RWMutex.
 	mu sync.RWMutex
+
+	// log is the logger used to log messages related to the StateManager.
+	//
+	// This field holds the logger used to log messages related to the StateManager.
+	// It is of type *zerolog.Logger.
+	log *zerolog.Logger
 }
 
 // NewStateManager creates a new instance of the StateManager struct.
 //
-// It takes an API and a WebhookRegistry as input parameters.
+// It takes an API, a WebhookRegistry, and a logger as input parameters.
 // It returns a pointer to the initialized StateManager.
 //
 // Parameters:
 //   - api: The API used to send status updates.
 //   - repo: The repository used to get webhook URLs.
+//   - log: The logger used to log messages.
 //
 // Returns:
 //   - A pointer to the initialized StateManager.
 //
 //nolint:exhaustruct
-func NewStateManager(api API, repo WebhookRegistry) *StateManager {
+func NewStateManager(api API, repo WebhookRegistry, log *zerolog.Logger) *StateManager {
 	// Create a new StateManager instance.
 	stateManager := &StateManager{
 		api:  api,  // Set the API used to send status updates.
 		repo: repo, // Set the repository used to get webhook URLs.
+		log:  log,  // Set the logger used to log messages.
 	}
 
 	// Create a new cache with a length based on the number of webhooks.
@@ -181,6 +190,9 @@ func (s *StateManager) garbageCollector(id uuid.UUID, current state) {
 		return
 	}
 
+	// Inform the webhook about the status update.
+	s.inform(id, entities.Down)
+
 	// Send a status update to the URL.
 	err = s.api.Send(ctx, target, entities.Down)
 	if err != nil {
@@ -226,18 +238,43 @@ func (s *StateManager) Send(ctx context.Context, id uuid.UUID, status entities.S
 	}
 
 	// Get the webhook URL from the repository.
+	// This is the URL of the webhook that will receive the status update.
 	target, err := s.repo.Get(ctx, id)
 	if err != nil {
 		return err
 	}
 
+	// Inform the logger that a status update is being sent.
+	// This logs the ID and status of the service being updated.
+	s.inform(id, status)
+
 	// Send the status update to the webhook.
+	// This sends a POST request to the webhook URL with the status as the request body.
 	if err := s.api.Send(ctx, target, status); err != nil {
 		return err
 	}
 
 	// Add the status to the cache.
+	// This adds the status to the cache so that it can be retrieved later.
 	s.cache.Add(id, state{status: status, attempt: 0}, ttl)
 
 	return nil
+}
+
+// inform logs the sending of a status update.
+//
+// It logs the ID and status of the service being updated.
+// It takes the ID of the service and its status as parameters.
+func (s *StateManager) inform(id uuid.UUID, status entities.Status) {
+	// Log the sending of a status update.
+	//
+	// The log message includes the ID and status of the service being updated.
+	// It takes the ID of the service and its status as parameters.
+	s.log.Info().
+		// The ID of the service.
+		Str("id", id.String()).
+		// The status of the service.
+		Str("status", status.String()).
+		// The message to log.
+		Msg("Sending status update")
 }

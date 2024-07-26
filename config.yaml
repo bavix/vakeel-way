@@ -6,7 +6,7 @@ grpc:
   port: 4643
 webhooks:
   - id: 224f8a59-6705-4f3e-b7de-177757932aad
-    target: http://127.0.0.1:8080
+    target: https://dummyjson.com/products/add
   - id: 3e0deba6-f375-4c60-b43e-4e60c8dbcbb9
     target: http://127.0.0.1:8081
   - id: 5e0deba6-f375-4c60-b43e-4e60c8dbcbb9

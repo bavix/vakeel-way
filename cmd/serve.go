@@ -2,8 +2,8 @@ package cmd
 
 import (
 	"errors"
-	"os"
 	"os/signal"
+	"syscall"
 
 	"github.com/spf13/cobra"
 	"google.golang.org/grpc"
@@ -29,7 +29,7 @@ func serveCmd() *cobra.Command {
 		// It returns an error if there is a problem starting the server.
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			// Create a new context that listens for the interrupt signal.
-			ctx, cancel := signal.NotifyContext(cmd.Context(), os.Interrupt)
+			ctx, cancel := signal.NotifyContext(cmd.Context(), syscall.SIGINT, syscall.SIGTERM)
 			defer cancel()
 
 			// Read the configuration from the environment variables.

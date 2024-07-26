@@ -153,11 +153,11 @@ func New(path string) (Config, error) {
 		Webhooks: Webhooks{},
 	}
 
-	// Check if the YAML file exists
-	// If the file does not exist, return the default config
+	// Check if the file exists
 	_, err := os.Stat(path)
 	if os.IsNotExist(err) {
-		return cfg, nil
+		// Return the default config and the error if the file does not exist
+		return cfg, err
 	}
 
 	// Read the contents of the YAML file
