@@ -5,6 +5,7 @@ import (
 
 	"github.com/bavix/vakeel-way/internal/domain/services"
 	"github.com/bavix/vakeel-way/internal/domain/usecases"
+	"github.com/rs/zerolog"
 )
 
 // checkerUsecase returns a new instance of the Checker usecase.
@@ -28,8 +29,9 @@ func (b *Builder) checkerUsecase(ctx context.Context) *usecases.Checker {
 	// a WebhookRepository instance used to retrieve webhooks by their UUIDs,
 	// and an InStatusClient instance that is used to send status updates to the state service.
 	stateManager := services.NewStateManager(
-		b.inStatusClient(),
-		b.WebhookRepository(),
+		b.inStatusClient(),    // The InStatusClient instance used to send status updates.
+		b.WebhookRepository(), // The WebhookRepository instance used to retrieve webhooks.
+		zerolog.Ctx(ctx),      // The logger used to log any errors or information.
 	)
 
 	// Create a new Checker instance using the StateManager instance.
@@ -40,7 +42,9 @@ func (b *Builder) checkerUsecase(ctx context.Context) *usecases.Checker {
 	// Start a goroutine to close the Checker instance when the context is canceled.
 	// This ensures that the Checker goroutine is stopped when the context is canceled.
 	go func() {
+		// Wait for the context to be canceled.
 		<-ctx.Done()
+		// Close the Checker instance to stop the goroutine.
 		b.checker.Close()
 	}()
 
@@ -49,5 +53,6 @@ func (b *Builder) checkerUsecase(ctx context.Context) *usecases.Checker {
 	// If the context is canceled, the goroutine returns.
 	go b.checker.Handler(ctx)
 
+	// Return the Checker instance.
 	return b.checker
 }

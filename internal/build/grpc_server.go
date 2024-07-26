@@ -50,9 +50,21 @@ func (b *Builder) RunGRPCServer(ctx context.Context) error {
 	// Start a goroutine that listens for the context to be closed. When the
 	// context is closed, it closes the listener. This ensures that the server
 	// is stopped when the context is closed.
+	//
+	// This goroutine is needed to ensure that the server is stopped when the
+	// context is closed. The server is stopped by calling the Stop method on
+	// the gRPC server. This method blocks until all active RPCs are finished.
+	//
+	// The goroutine is started after the gRPC server is started. This ensures
+	// that the server is stopped after all active RPCs are finished.
 	go func() {
-		<-ctx.Done() // Wait for the context to be closed.
-		server.GracefulStop()
+		// Wait for the context to be closed.
+		<-ctx.Done()
+
+		// Stop the server after all active RPCs are finished. The server is
+		// stopped by calling the Stop method on the gRPC server. This method
+		// blocks until all active RPCs are finished.
+		server.Stop()
 	}()
 
 	// Register the gRPC service implementation with the gRPC server.
