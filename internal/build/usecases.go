@@ -3,9 +3,10 @@ package build
 import (
 	"context"
 
+	"github.com/rs/zerolog"
+
 	"github.com/bavix/vakeel-way/internal/domain/services"
 	"github.com/bavix/vakeel-way/internal/domain/usecases"
-	"github.com/rs/zerolog"
 )
 
 // checkerUsecase returns a new instance of the Checker usecase.
