@@ -9,3 +9,5 @@ jobs:
     permissions:
       contents: write
     uses: bavix/.github/.github/workflows/go-release-binary.yml@0.3.1
+    with:
+      executable_compression: upx -v -9
