@@ -3,7 +3,7 @@ module github.com/bavix/vakeel-way
 go 1.22.5
 
 require (
-	github.com/bavix/apis v1.0.0
+	github.com/bavix/apis v1.0.1
 	github.com/goccy/go-yaml v1.12.0
 	github.com/google/uuid v1.6.0
 	github.com/rs/zerolog v1.33.0
