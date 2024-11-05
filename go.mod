@@ -4,7 +4,7 @@ go 1.22.5
 
 require (
 	github.com/bavix/apis v1.0.1
-	github.com/goccy/go-yaml v1.13.4
+	github.com/goccy/go-yaml v1.13.5
 	github.com/google/uuid v1.6.0
 	github.com/rs/zerolog v1.33.0
 	github.com/spf13/cobra v1.8.1
