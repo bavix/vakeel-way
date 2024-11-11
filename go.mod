@@ -4,7 +4,7 @@ go 1.22.5
 
 require (
 	github.com/bavix/apis v1.0.1
-	github.com/goccy/go-yaml v1.13.6
+	github.com/goccy/go-yaml v1.13.7
 	github.com/google/uuid v1.6.0
 	github.com/rs/zerolog v1.33.0
 	github.com/spf13/cobra v1.8.1
@@ -15,7 +15,6 @@ require (
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
-	github.com/fatih/color v1.18.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
