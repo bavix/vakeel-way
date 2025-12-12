@@ -1,6 +1,7 @@
 module github.com/bavix/vakeel-way
 
-go 1.22.5
+go 1.23
+
 toolchain go1.24.1
 
 require (
@@ -11,7 +12,7 @@ require (
 	github.com/spf13/cobra v1.9.1
 	github.com/stretchr/testify v1.10.0
 	google.golang.org/grpc v1.72.0
-	google.golang.org/protobuf v1.36.6
+	google.golang.org/protobuf v1.36.11
 )
 
 require (
