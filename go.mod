@@ -1,11 +1,12 @@
 module github.com/bavix/vakeel-way
 
-go 1.22.5
+go 1.23
+
 toolchain go1.24.1
 
 require (
 	github.com/bavix/apis v1.0.1
-	github.com/goccy/go-yaml v1.16.0
+	github.com/goccy/go-yaml v1.19.2
 	github.com/google/uuid v1.6.0
 	github.com/rs/zerolog v1.34.0
 	github.com/spf13/cobra v1.9.1
